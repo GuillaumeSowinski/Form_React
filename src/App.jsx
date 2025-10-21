@@ -1,42 +1,47 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { Container } from 'react-bootstrap';
 
+
 function App() {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors } } = useForm({
+      mode: "onBlur"
+    });
 
-  const [formData, setFormData] = useState({
-    name: "",
-    date: "",
-    priority: "low",
-    checkbox: false,
-  })
 
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: type === "checkbox" ? checked : value,
-    }))
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(formData);
+  const onSubmit = (data) => {
+    console.log("Données du formulaire :", data);
+    reset();
   };
 
   return (
     <Container as='main' className='mt-4'>
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit(onSubmit)}>
         <Form.Group className="mb-3" >
           <Form.Label >Nom</Form.Label>
           <Form.Control
             type="text"
             name="name"
             placeholder="Votre prénom"
-            onChange={handleChange}
-            value={formData.name}
-            required />
+            {...register("name", {
+              required: "Écrivez votre nom",
+              minLength: {
+                value: 3,
+                message: "Must be at least 3 characters"
+              },
+            })}
+            isInvalid={!!errors.name}
+          />
+          {errors.name && (
+            <Form.Control.Feedback type="invalid">
+              {errors.name.message}
+            </Form.Control.Feedback>
+          )}
         </Form.Group>
 
         <Form.Group className="mb-3" >
@@ -44,17 +49,21 @@ function App() {
           <Form.Control
             type="date"
             name="date"
-            value={formData.date}
-            onChange={handleChange}
-            required />
+            {...register("date", { required: "Renseignez une date" })}
+            isInvalid={!!errors.date}
+          />
+          {errors.date && (
+            <Form.Control.Feedback type="invalid">
+              {errors.date.message}
+            </Form.Control.Feedback>
+          )}
         </Form.Group>
         <Form.Group className="mb-3" >
           <Form.Label>Priorité</Form.Label>
           <Form.Select
             name="priority"
-            value={formData.priority}
-            onChange={handleChange}
-            required
+            {...register("priority", { required: "Choisissez une priorité" })}
+            isInvalid={!!errors.priority}
           >
             <option value="low">Basse</option>
             <option value="middle">Moyenne</option>
@@ -66,9 +75,12 @@ function App() {
             name="checkbox"
             type="checkbox"
             label="is Completed"
-            checked={formData.checkbox}
-            onChange={handleChange}
-            required />
+            {...register("completed", { required: "Cochez cette case" })}
+            isInvalid={!!errors.completed}
+          />
+          {errors.completed && (
+            <span className="text-white bg-danger ms-2">{errors.completed.message}</span>
+          )}
         </Form.Group>
         <Button variant="primary" type="submit">
           Submit
@@ -78,4 +90,5 @@ function App() {
   );
 
 }
+
 export default App;
