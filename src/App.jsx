@@ -8,7 +8,7 @@ function App() {
   const [formData, setFormData] = useState({
     name: "",
     date: "",
-    priority: "",
+    priority: "low",
     checkbox: false,
   })
 
@@ -56,10 +56,9 @@ function App() {
             onChange={handleChange}
             required
           >
-            <option value="">Choisissez une priorité</option>
-            <option value="Basse - Par défaut">Basse - Par défaut</option>
-            <option value="Moyenne">Moyenne</option>
-            <option value="Elevée">Elevée</option>
+            <option value="low">Basse</option>
+            <option value="middle">Moyenne</option>
+            <option value="high">Elevée</option>
           </Form.Select>
         </Form.Group>
         <Form.Group className="mb-3" controlId="formBasicCheckbox">
