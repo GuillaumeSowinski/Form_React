@@ -36,7 +36,7 @@ function App() {
               required: "Écrivez votre nom",
               minLength: {
                 value: 2,
-                message: "Votre nom ne peut pas faire moins de 2 lettres"
+                message: "Le nom de la tâche ne peut pas faire moins de 2 lettres"
               },
             })}
             isInvalid={!!errors.name}
