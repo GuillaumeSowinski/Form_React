@@ -30,16 +30,16 @@ function App() {
             {...register("name", {
               required: "Écrivez votre nom",
               minLength: {
-                value: 3,
-                message: "Must be at least 3 characters"
+                value: 2,
+                message: "Votre nom ne peut pas faire moins de 2 lettres"
               },
             })}
             isInvalid={!!errors.name}
           />
           {errors.name && (
-            <Form.Control.Feedback type="invalid">
+            <p className='text-danger'>
               {errors.name.message}
-            </Form.Control.Feedback>
+            </p>
           )}
         </Form.Group>
 
@@ -51,9 +51,11 @@ function App() {
             isInvalid={!!errors.date}
           />
           {errors.date && (
-            <Form.Control.Feedback type="invalid">
+            <p className='text-danger'>
               {errors.date.message}
-            </Form.Control.Feedback>
+            </p>
+
+
           )}
         </Form.Group>
         <Form.Group className="mb-3" >
