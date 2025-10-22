@@ -1,22 +1,54 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { Container } from 'react-bootstrap';
 
 
+
+
 function App() {
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors } } = useForm({
-      mode: "onBlur",
-      defaultValues: {
-        priority: "low",
-        completed: false
-      }
+
+  const schema = yup.object().shape({
+    name: yup
+      .string()
+      .required("Le nom est requis")
+      .min(8, "Le nom de la tâche doit faire au moins 8 caractères.")
+      .max(15, "Le nom de la tâche doit faire maximum 15 caractères."),
+    date: yup
+      .string()
+      .required("La date est requise")
+      .matches(/^(0[1-9]|[12][0-9]|3[0-1])\/(0[1-9]|1[0-2])\/\d{4}$/, "Le format doit être JJ/MM/AAAA")
+      .test(
+        "date-not-past",
+        "La date ne peut pas être antérieure à aujourd'hui",
+        function (value) {
+          if (!value) return false;
+          const [day, month, year] = value.split("/");
+          const inputDate = new Date(year, month - 1, day);
+          const today = new Date()
+          today.setHours(0, 0, 0, 0);
+          return inputDate >= today
+        }
+      ),
+    priority: yup
+      .string()
+      .oneOf(["low", "middle", "high"]),
+    completed: yup.boolean()
+  });
+
+
+  const { register, handleSubmit, reset, formState: { errors } } = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      name: "",
+      date: "",
+      priority: "low",
+      completed: false
     }
-    );
+  })
+
 
 
   const onSubmit = (data) => {
@@ -32,13 +64,7 @@ function App() {
           <Form.Control
             type="text"
             placeholder="Nom de la tâche"
-            {...register("name", {
-              required: "Écrivez votre nom",
-              minLength: {
-                value: 2,
-                message: "Le nom de la tâche ne peut pas faire moins de 2 lettres"
-              },
-            })}
+            {...register("name",)}
             isInvalid={!!errors.name}
           />
           {errors.name && (
@@ -51,8 +77,8 @@ function App() {
         <Form.Group className="mb-3" >
           <Form.Label>Date due</Form.Label>
           <Form.Control
-            type="date"
-            {...register("date", { required: "Renseignez une date" })}
+            type="text"
+            {...register("date")}
             isInvalid={!!errors.date}
           />
           {errors.date && (
