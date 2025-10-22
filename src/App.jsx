@@ -26,7 +26,6 @@ function App() {
           <Form.Label >Nom</Form.Label>
           <Form.Control
             type="text"
-            name="name"
             placeholder="Votre prénom"
             {...register("name", {
               required: "Écrivez votre nom",
@@ -48,7 +47,6 @@ function App() {
           <Form.Label>Date due</Form.Label>
           <Form.Control
             type="date"
-            name="date"
             {...register("date", { required: "Renseignez une date" })}
             isInvalid={!!errors.date}
           />
@@ -61,7 +59,6 @@ function App() {
         <Form.Group className="mb-3" >
           <Form.Label>Priorité</Form.Label>
           <Form.Select
-            name="priority"
             {...register("priority", { required: "Choisissez une priorité" })}
             isInvalid={!!errors.priority}
           >
@@ -72,7 +69,6 @@ function App() {
         </Form.Group>
         <Form.Group className="mb-3" controlId="formBasicCheckbox">
           <Form.Check
-            name="checkbox"
             type="checkbox"
             label="is Completed"
             {...register("completed", { required: "Cochez cette case" })}
