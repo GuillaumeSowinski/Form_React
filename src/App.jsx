@@ -31,7 +31,7 @@ function App() {
           <Form.Label >Nom</Form.Label>
           <Form.Control
             type="text"
-            placeholder="Votre prénom"
+            placeholder="Nom de la tâche"
             {...register("name", {
               required: "Écrivez votre nom",
               minLength: {
