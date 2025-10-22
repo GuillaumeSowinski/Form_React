@@ -10,8 +10,13 @@ function App() {
     handleSubmit,
     reset,
     formState: { errors } } = useForm({
-      mode: "onBlur"
-    });
+      mode: "onBlur",
+      defaultValues: {
+        priority: "low",
+        completed: false
+      }
+    }
+    );
 
 
   const onSubmit = (data) => {
@@ -37,9 +42,9 @@ function App() {
             isInvalid={!!errors.name}
           />
           {errors.name && (
-            <p className='text-danger'>
+            <Form.Control.Feedback type="invalid">
               {errors.name.message}
-            </p>
+            </Form.Control.Feedback>
           )}
         </Form.Group>
 
@@ -51,18 +56,15 @@ function App() {
             isInvalid={!!errors.date}
           />
           {errors.date && (
-            <p className='text-danger'>
+            <Form.Control.Feedback type="invalid">
               {errors.date.message}
-            </p>
-
-
+            </Form.Control.Feedback>
           )}
         </Form.Group>
         <Form.Group className="mb-3" >
           <Form.Label>Priorité</Form.Label>
           <Form.Select
-            {...register("priority", { required: "Choisissez une priorité" })}
-            isInvalid={!!errors.priority}
+            {...register("priority")}
           >
             <option value="low">Basse</option>
             <option value="middle">Moyenne</option>
@@ -73,15 +75,11 @@ function App() {
           <Form.Check
             type="checkbox"
             label="is Completed"
-            {...register("completed", { required: "Cochez cette case" })}
-            isInvalid={!!errors.completed}
+            {...register("completed")}
           />
-          {errors.completed && (
-            <span className="text-white bg-danger ms-2">{errors.completed.message}</span>
-          )}
         </Form.Group>
         <Button variant="primary" type="submit">
-          Submit
+          Envoyez
         </Button>
       </Form>
     </Container>
